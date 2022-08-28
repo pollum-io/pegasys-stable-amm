@@ -14,6 +14,7 @@ import "forge-std/Test.sol";
 import "forge-std/console2.sol";
 
 contract TestDeployer is Test {
+  
     SwapDeployer public swapDeployer;
     Swap public swap0;
     Swap public swap1;
@@ -83,21 +84,9 @@ contract TestDeployer is Test {
             lpToken2TargetAddress
         );
 
-
         swap0Clone = ISwap(swap0CloneAddress);
         swap2Clone = ISwap(swap2CloneAddress);
 
-        // swapDeployer.deploy(
-        //     swap0Address,
-        //     pooledTokens,
-        //     decimals,
-        //     lpToken0Name,
-        //     lpToken0Symbol,
-        //     _a,
-        //     _fee,
-        //     _adminFee,
-        //     lpToken0TargetAddress
-        // );
         address swap0Token = address(swap0Clone.getLpToken());
         address swap2Token = address(swap2Clone.getLpToken());
         lpToken0 = LPToken(swap0Token);
@@ -149,16 +138,55 @@ contract TestDeployer is Test {
         address swap1Token = address(swap1Clone.getLpToken());
         lpToken1 = LPToken(swap1Token);
     }
+    function routerAddLiquidity(address _user) public returns(uint){
 
-    function testAddLiquidity() public {
-        uint256 amountMint = 10000000000000000000000000;
-        token0.mint(address(this), amountMint * 10**18);
-        token0.approve(address(swap0Clone), amountMint * 10**18);
-        token1.mint(address(this), amountMint * 10**18);
-        token1.approve(address(swap0Clone), amountMint * 10**18);
+        uint256 mintAmount= 10000000000000000; //hardcoded due to later calls on other tests
+        token0.mint(_user, mintAmount * 10**18);
+        token1.mint(_user, mintAmount * 10**18);
+        token3.mint(_user, mintAmount * 10**18);
+        vm.startPrank(_user);
+
+        token0.approve(address(router), mintAmount* 10**18);
+        token1.approve(address(router), mintAmount* 10**18);
+        token3.approve(address(router), mintAmount* 10**18);
+
+        uint256[] memory base_amounts = new uint256[](2);
+        base_amounts[0] = mintAmount* 10**17;
+        base_amounts[1] = mintAmount* 10**17;
+
+        uint256[] memory meta_amounts = new uint256[](2);
+        meta_amounts[0] = lpToken0.totalSupply() / 2;
+        meta_amounts[1] = mintAmount * 10**17;
+
+        uint256 lpAmount = router.addLiquidity(
+            swap1Clone, /////META POOL
+            swap0Clone, /////BASE POOL
+            meta_amounts,
+            base_amounts,
+            0,
+            block.timestamp + 100
+        );
+        console.logUint(lpAmount);
+        vm.stopPrank();
+        return lpAmount;
+
+     } 
+    function testAddLiquidity(uint mintAmount) public {
+
+        vm.assume(mintAmount>10);
+        vm.assume(mintAmount<10**18); // 10**36
+        address user1 = address(1);
+        // uint256 amountMint = 10000000000000000000000000;
+        token0.mint(user1, mintAmount * 10**18);
+        token1.mint(user1, mintAmount * 10**18);
+
+        vm.startPrank(user1);
+
+        token0.approve(address(swap0Clone), mintAmount * 10**18);
+        token1.approve(address(swap0Clone), mintAmount * 10**18);
         uint256[] memory amounts = new uint256[](2);
-        amounts[0] = 100 * 10**18;
-        amounts[1] = 100 * 10**18;
+        amounts[0] = mintAmount* 10**17;
+        amounts[1] = mintAmount* 10**17;
         uint256 calculatedAmount = swap0Clone.calculateTokenAmount(
             amounts,
             true
@@ -168,27 +196,30 @@ contract TestDeployer is Test {
         assertTrue(calculatedAmount > 0);
         swap0Clone.addLiquidity(amounts, 1, block.timestamp + 100);
         console.logUint(swap0Clone.getTokenBalance(0));
-        assertTrue(swap0Clone.getTokenBalance(0) > 10000000000000000000);
-        assertTrue(swap0Clone.getTokenBalance(1) > 10000000000000000000);
+        assertTrue(swap0Clone.getTokenBalance(0) >= mintAmount/10);
+        assertTrue(swap0Clone.getTokenBalance(1) > mintAmount/10);
         assertTrue(lpToken0.totalSupply() > 0);
+        vm.stopPrank();
     }
 
     function testRouterAddLiquidity() public returns (uint256) {
-        uint256 amountMint = 10000000000000000000000;
-        token0.mint(address(this), amountMint * 10**18);
-        token0.approve(address(router), amountMint * 10**18);
-        token1.mint(address(this), amountMint * 10**18);
-        token1.approve(address(router), amountMint * 10**18);
-        token3.mint(address(this), amountMint * 10**18);
-        token3.approve(address(router), amountMint * 10**18);
+        uint256 mintAmount= 10000000000000000; //hardcoded due to later calls on other tests
+        address user1 = address(this);
+        token0.mint(user1, mintAmount * 10**18);
+        token1.mint(user1, mintAmount * 10**18);
+        token3.mint(user1, mintAmount * 10**18);
+
+        token0.approve(address(router), mintAmount* 10**18);
+        token1.approve(address(router), mintAmount* 10**18);
+        token3.approve(address(router), mintAmount* 10**18);
 
         uint256[] memory base_amounts = new uint256[](2);
-        base_amounts[0] = 100 * 10**18;
-        base_amounts[1] = 100 * 10**18;
+        base_amounts[0] = mintAmount* 10**17;
+        base_amounts[1] = mintAmount* 10**17;
 
         uint256[] memory meta_amounts = new uint256[](2);
         meta_amounts[0] = lpToken0.totalSupply() / 2;
-        meta_amounts[1] = 100 * 10**18;
+        meta_amounts[1] = mintAmount * 10**17;
 
         uint256 lpAmount = router.addLiquidity(
             swap1Clone, /////META POOL
@@ -204,9 +235,11 @@ contract TestDeployer is Test {
     }
 
     function testRouterSwapFromBase() public {
-        testRouterAddLiquidity();
-        uint256 previousAmount0 = token0.balanceOf(address(this));
-        uint256 previousAmount1 = token3.balanceOf(address(this));
+        address user1 = address(1);
+        routerAddLiquidity(user1);
+        vm.startPrank(user1);
+        uint256 previousAmount0 = token0.balanceOf(user1);
+        uint256 previousAmount1 = token3.balanceOf(user1);
         uint256 calculateAmount = router.calculateSwapFromBase(
             swap1Clone,
             swap0Clone,
@@ -223,20 +256,27 @@ contract TestDeployer is Test {
             1**17,
             block.timestamp + 100
         );
-        uint256 currentAmount0 = token0.balanceOf(address(this));
-        uint256 currentAmount1 = token3.balanceOf(address(this));
+        uint256 currentAmount0 = token0.balanceOf(user1);
+        uint256 currentAmount1 = token3.balanceOf(user1);
+        vm.stopPrank();
+
         assertTrue(previousAmount0 > currentAmount0);
         assertTrue(previousAmount1 < currentAmount1);
     }
 
-    function testRouterSwapToBase() public {
-        testRouterAddLiquidity();
-        uint256 amountMint = 100;
-        token3.mint(address(this), amountMint * 10**18);
+    function testRouterSwapToBase(uint mintAmount) public {
+
+        vm.assume(mintAmount > 0);
+        vm.assume(mintAmount < 10**18);
+        address user2 = address(2);
+        routerAddLiquidity(user2);
+        token3.mint(user2, mintAmount * 10**17);
+
+        vm.startPrank(user2);
         token3.approve(address(router), token3.totalSupply());
 
-        uint256 previousAmount0 = token3.balanceOf(address(this));
-        uint256 previousAmount1 = token0.balanceOf(address(this));
+        uint256 previousAmount0 = token3.balanceOf(user2);
+        uint256 previousAmount1 = token0.balanceOf(user2);
         console.logUint(previousAmount0);
         console.logUint(previousAmount1);
         uint256 calculateAmount = router.calculateSwapToBase(
@@ -255,36 +295,14 @@ contract TestDeployer is Test {
             1 * 10**18,
             block.timestamp + 100
         );
-        uint256 currentAmount0 = token3.balanceOf(address(this));
-        uint256 currentAmount1 = token0.balanceOf(address(this));
+        uint256 currentAmount0 = token3.balanceOf(user2);
+        uint256 currentAmount1 = token0.balanceOf(user2);
         console.logUint(currentAmount0);
         console.logUint(currentAmount1);
         assertTrue(previousAmount0 > currentAmount0);
         assertTrue(previousAmount1 < currentAmount1);
+        vm.stopPrank();
     }
-
-    // function testRouterRemoveLiquidity() public {
-    //     testRouterAddLiquidity();
-    //     uint256 totalSupply = lpToken1.totalSupply();
-    //     console.logUint(totalSupply);
-
-    //     lpToken1.approve(address(router), totalSupply * 3);
-
-    //     (uint256[] memory meta_amounts, uint256[] memory base_amounts) = router
-    //         .calculateRemoveLiquidity(swap1Clone, swap0Clone, totalSupply);
-
-    //     router.removeLiquidity(
-    //         swap1Clone,
-    //         swap0Clone,
-    //         totalSupply,
-    //         meta_amounts,
-    //         base_amounts,
-    //         block.timestamp + 100
-    //     );
-    //     assertTrue(lpToken1.totalSupply() == 0);
-    // }
-
-    // uint256 MAX_INT = 2**256 - 1;
 
     function testRemoveLiquidityOneToken() public {
         testRouterAddLiquidity();
@@ -328,81 +346,33 @@ contract TestDeployer is Test {
     }
 
     uint256 MAX_INT = 2**256 - 1;
-/*
-    function convert(
-        ISwap fromPool,
-        ISwap toPool,
-        uint256 amount,
-        uint256 minToMint,
-        uint256 deadline
-    ) external returns (uint256) {
-        uint256 fromPoolLength = fromPool.getNumberOfTokens();
-        uint256 toPoolLength = toPool.getNumberOfTokens();
-        require(address(fromPool) != address(toPool), "fromPool = toPool");
-        require(fromPoolLength == toPoolLength, "poolTokensLengthMissmatch");
-        IERC20 fromToken = fromPool.getLpToken();
-        IERC20 toToken = toPool.getLpToken();
-        uint256[] memory min_amounts = new uint256[](fromPoolLength);
-        // validate token
-        for (uint8 i = 0; i < fromPoolLength; i++) {
-            IERC20 coin = fromPool.getToken(i);
-            toPool.getTokenIndex(address(coin));
-        }
-        fromToken.transferFrom(msg.sender, address(this), amount);
-        fromToken.safeIncreaseAllowance(address(fromPool), amount);
-        fromPool.removeLiquidity(amount, min_amounts, deadline);
 
-        uint256[] memory meta_amounts = new uint256[](toPoolLength);
-
-        for (uint8 i = 0; i < toPoolLength; i++) {
-            IERC20 coin = toPool.getToken(i);
-            uint256 addBalance = coin.balanceOf(address(this));
-            coin.safeIncreaseAllowance(address(toPool), addBalance);
-            meta_amounts[i] = addBalance;
-        }
-        toPool.addLiquidity(meta_amounts, minToMint, deadline);
-
-        uint256 lpAmount = toToken.balanceOf(address(this));
-        toToken.transfer(msg.sender, lpAmount);
-        return lpAmount;
-    }
-
-
-    function calculateConvert(
-        ISwap fromPool,
-        ISwap toPool,
-        uint256 amount
-    ) external view returns (uint256) {
-        uint256 fromPoolLength = fromPool.getNumberOfTokens();
-        uint256[] memory amounts = fromPool.calculateRemoveLiquidity(amount);
-        uint256[] memory meta_amounts = new uint256[](fromPoolLength);
-        for (uint8 i = 0; i < fromPoolLength; i++) {
-            IERC20 fromCoin = fromPool.getToken(i);
-            uint256 toCoinIndex = toPool.getTokenIndex(address(fromCoin));
-            meta_amounts[toCoinIndex] = amounts[i];
-        }
-        return toPool.calculateTokenAmount(meta_amounts, true);
-    }
-
-
-
-*/
     function testConvert() public {
-        uint256 amountMint = 10000000000000000000000;
-        token0.mint(address(this), amountMint * 10**18);
-        token0.approve(address(router), amountMint * 10**18);
-        token1.mint(address(this), amountMint * 10**18);
-        token1.approve(address(router), amountMint * 10**18);
-        token3.mint(address(this), amountMint * 10**18);
-        token3.approve(address(router), amountMint * 10**18);
+        
+        uint mintAmount = 10000000;
+        address user3 = address(3);
+        routerAddLiquidity(user3);
+
+        vm.assume(mintAmount > 0);
+        vm.assume(mintAmount < 10**18);
+
+        token0.mint(user3, mintAmount* 10**18);
+        token1.mint(user3, mintAmount* 10**18);
+        token3.mint(user3, mintAmount* 10**18);
+
+        vm.startPrank(user3);
+ 
+        token0.approve(address(router), mintAmount* 10**18);
+        token1.approve(address(router), mintAmount* 10**18);
+        token3.approve(address(router), mintAmount* 10**18);
 
         uint256[] memory base_amounts = new uint256[](2);
-        base_amounts[0] = 100 * 10**18;
-        base_amounts[1] = 100 * 10**18;
+        base_amounts[0] = mintAmount * 10**17;
+        base_amounts[1] = mintAmount * 10**17;
 
         uint256[] memory meta_amounts = new uint256[](2);
         meta_amounts[0] = lpToken0.totalSupply() / 2;
-        meta_amounts[1] = 100 * 10**18;
+        meta_amounts[1] = mintAmount * 10**17;
 
         uint256 lpAmount = router.addLiquidity(
             swap1Clone, /////META POOL
@@ -415,27 +385,25 @@ contract TestDeployer is Test {
         console.logUint(lpAmount);
         assertTrue(lpAmount > 0);
 
-        token0.approve(address(swap0Clone), amountMint * 10**18);
-        token1.approve(address(swap0Clone), amountMint * 10**18);
+        token0.approve(address(swap0Clone), mintAmount * 10**18);
+        token1.approve(address(swap0Clone), mintAmount * 10**18);
         swap0Clone.addLiquidity(base_amounts,10**18,block.timestamp +100);
 
-        lpToken0.approve(address(router),10**25); 
-        // assertTrue(lpToken2.balanceOf(address(this))==0);
-//------------------------------------------//
-       console.logUint(router.calculateConvert(
+        lpToken0.approve(address(router),10**36); 
+        console.logUint(router.calculateConvert(
         swap0Clone,
         swap2Clone,
-        2*10**18
+        mintAmount*10**17
       )); 
         uint lpAmountTransfered = router.convert(
         swap0Clone,
         swap2Clone,
         // 2*10**18,
-        lpToken0.balanceOf(address(this)),
+        lpToken0.balanceOf(user3),
         10**18,
         block.timestamp+1000 
      ); 
-
-       assertTrue(lpAmountTransfered>0);
+     vm.stopPrank();
+     assertTrue(lpAmountTransfered>0);
    }
 }
