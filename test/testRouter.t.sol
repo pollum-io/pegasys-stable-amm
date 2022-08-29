@@ -264,8 +264,6 @@ contract TestDeployer is Test {
         testRouterAddLiquidity();
         address user1 = address(1);
         vm.startPrank(user1);
-        uint256 lpAmount = lpToken0.totalSupply();
-        uint256 amount = swap1Clone.getTokenBalance(0);
         lpToken1.approve(address(router), MAX_INT);
 
         uint256 amountReceived = router.removeBaseLiquidityOneToken(
