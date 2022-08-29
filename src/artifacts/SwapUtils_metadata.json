@@ -1,0 +1,630 @@
+{
+	"compiler": {
+		"version": "0.8.0+commit.c7dfd78e"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "provider",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256[]",
+						"name": "tokenAmounts",
+						"type": "uint256[]"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256[]",
+						"name": "fees",
+						"type": "uint256[]"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "invariant",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "lpTokenSupply",
+						"type": "uint256"
+					}
+				],
+				"name": "AddLiquidity",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "newAdminFee",
+						"type": "uint256"
+					}
+				],
+				"name": "NewAdminFee",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "newSwapFee",
+						"type": "uint256"
+					}
+				],
+				"name": "NewSwapFee",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "provider",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256[]",
+						"name": "tokenAmounts",
+						"type": "uint256[]"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "lpTokenSupply",
+						"type": "uint256"
+					}
+				],
+				"name": "RemoveLiquidity",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "provider",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256[]",
+						"name": "tokenAmounts",
+						"type": "uint256[]"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256[]",
+						"name": "fees",
+						"type": "uint256[]"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "invariant",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "lpTokenSupply",
+						"type": "uint256"
+					}
+				],
+				"name": "RemoveLiquidityImbalance",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "provider",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "lpTokenAmount",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "lpTokenSupply",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "boughtId",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "tokensBought",
+						"type": "uint256"
+					}
+				],
+				"name": "RemoveLiquidityOne",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "buyer",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "tokensSold",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "tokensBought",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint128",
+						"name": "soldId",
+						"type": "uint128"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint128",
+						"name": "boughtId",
+						"type": "uint128"
+					}
+				],
+				"name": "TokenSwap",
+				"type": "event"
+			},
+			{
+				"inputs": [],
+				"name": "MAX_ADMIN_FEE",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "MAX_SWAP_FEE",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "POOL_PRECISION_DECIMALS",
+				"outputs": [
+					{
+						"internalType": "uint8",
+						"name": "",
+						"type": "uint8"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"details": "Contracts relying on this library must initialize SwapUtils.Swap struct then use this library for SwapUtils.Swap struct. Note that this library contains both functions called by users and admins. Admin functions should be protected within contracts using this library.",
+			"kind": "dev",
+			"methods": {
+				"addLiquidity(SwapUtils.Swap storage,uint256[],uint256)": {
+					"params": {
+						"amounts": "the amounts of each token to add, in their native precision",
+						"minToMint": "the minimum LP tokens adding this amount of liquidity should mint, otherwise revert. Handy for front-running mitigation allowed addresses. If the pool is not in the guarded launch phase, this parameter will be ignored.",
+						"self": "Swap struct to read from and write to"
+					},
+					"returns": {
+						"_0": "amount of LP token user received"
+					}
+				},
+				"calculateRemoveLiquidity(SwapUtils.Swap storage,uint256)": {
+					"params": {
+						"amount": "the amount of LP tokens that would to be burned on withdrawal"
+					},
+					"returns": {
+						"_0": "array of amounts of tokens user will receive"
+					}
+				},
+				"calculateSwap(SwapUtils.Swap storage,uint8,uint8,uint256)": {
+					"params": {
+						"dx": "the number of tokens to sell. If the token charges a fee on transfers, use the amount that gets transferred after the fee.",
+						"self": "Swap struct to read from",
+						"tokenIndexFrom": "the token to sell",
+						"tokenIndexTo": "the token to buy"
+					},
+					"returns": {
+						"dy": "the number of tokens the user will get"
+					}
+				},
+				"calculateTokenAmount(SwapUtils.Swap storage,uint256[],bool)": {
+					"details": "This shouldn't be used outside frontends for user estimates.",
+					"params": {
+						"amounts": "an array of token amounts to deposit or withdrawal, corresponding to pooledTokens. The amount should be in each pooled token's native precision. If a token charges a fee on transfers, use the amount that gets transferred after the fee.",
+						"deposit": "whether this is a deposit or a withdrawal",
+						"self": "Swap struct to read from"
+					},
+					"returns": {
+						"_0": "if deposit was true, total amount of lp token that will be minted and if deposit was false, total amount of lp token that will be burned"
+					}
+				},
+				"calculateWithdrawOneToken(SwapUtils.Swap storage,uint256,uint8)": {
+					"params": {
+						"self": "Swap struct to read from",
+						"tokenAmount": "the amount to withdraw in the pool's precision",
+						"tokenIndex": "which token will be withdrawn"
+					},
+					"returns": {
+						"_0": "the amount of token user will receive"
+					}
+				},
+				"getAdminBalance(SwapUtils.Swap storage,uint256)": {
+					"params": {
+						"index": "Index of the pooled token",
+						"self": "Swap struct to read from"
+					},
+					"returns": {
+						"_0": "admin balance in the token's precision"
+					}
+				},
+				"getVirtualPrice(SwapUtils.Swap storage)": {
+					"params": {
+						"self": "Swap struct to read from"
+					},
+					"returns": {
+						"_0": "the virtual price, scaled to precision of POOL_PRECISION_DECIMALS"
+					}
+				},
+				"removeLiquidity(SwapUtils.Swap storage,uint256,uint256[])": {
+					"details": "Liquidity can always be removed, even when the pool is paused.",
+					"params": {
+						"amount": "the amount of LP tokens to burn",
+						"minAmounts": "the minimum amounts of each token in the pool acceptable for this burn. Useful as a front-running mitigation",
+						"self": "Swap struct to read from and write to"
+					},
+					"returns": {
+						"_0": "amounts of tokens the user received"
+					}
+				},
+				"removeLiquidityImbalance(SwapUtils.Swap storage,uint256[],uint256)": {
+					"params": {
+						"amounts": "how much of each token to withdraw",
+						"maxBurnAmount": "the max LP token provider is willing to pay to remove liquidity. Useful as a front-running mitigation.",
+						"self": "Swap struct to read from and write to"
+					},
+					"returns": {
+						"_0": "actual amount of LP tokens burned in the withdrawal"
+					}
+				},
+				"removeLiquidityOneToken(SwapUtils.Swap storage,uint256,uint8,uint256)": {
+					"params": {
+						"minAmount": "the minimum amount to withdraw, otherwise revert",
+						"self": "Swap struct to read from and write to",
+						"tokenAmount": "the amount of the lp tokens to burn",
+						"tokenIndex": "the index of the token you want to receive"
+					},
+					"returns": {
+						"_0": "amount chosen token that user received"
+					}
+				},
+				"setAdminFee(SwapUtils.Swap storage,uint256)": {
+					"details": "adminFee cannot be higher than 100% of the swap fee",
+					"params": {
+						"newAdminFee": "new admin fee to be applied on future transactions",
+						"self": "Swap struct to update"
+					}
+				},
+				"setSwapFee(SwapUtils.Swap storage,uint256)": {
+					"details": "fee cannot be higher than 1% of each swap",
+					"params": {
+						"newSwapFee": "new swap fee to be applied on future transactions",
+						"self": "Swap struct to update"
+					}
+				},
+				"swap(SwapUtils.Swap storage,uint8,uint8,uint256,uint256)": {
+					"params": {
+						"dx": "the amount of tokens the user wants to sell",
+						"minDy": "the min amount the user would like to receive, or revert.",
+						"self": "Swap struct to read from and write to",
+						"tokenIndexFrom": "the token the user wants to sell",
+						"tokenIndexTo": "the token the user wants to buy"
+					},
+					"returns": {
+						"_0": "amount of token user received on swap"
+					}
+				},
+				"withdrawAdminFees(SwapUtils.Swap storage,address)": {
+					"params": {
+						"self": "Swap struct to withdraw fees from",
+						"to": "Address to send the fees to"
+					}
+				}
+			},
+			"title": "SwapUtils library",
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {
+				"addLiquidity(SwapUtils.Swap storage,uint256[],uint256)": {
+					"notice": "Add liquidity to the pool"
+				},
+				"calculateRemoveLiquidity(SwapUtils.Swap storage,uint256)": {
+					"notice": "A simple method to calculate amount of each underlying tokens that is returned upon burning given amount of LP tokens"
+				},
+				"calculateSwap(SwapUtils.Swap storage,uint8,uint8,uint256)": {
+					"notice": "Externally calculates a swap between two tokens."
+				},
+				"calculateTokenAmount(SwapUtils.Swap storage,uint256[],bool)": {
+					"notice": "A simple method to calculate prices from deposits or withdrawals, excluding fees but including slippage. This is helpful as an input into the various \"min\" parameters on calls to fight front-running"
+				},
+				"calculateWithdrawOneToken(SwapUtils.Swap storage,uint256,uint8)": {
+					"notice": "Calculate the dy, the amount of selected token that user receives and the fee of withdrawing in one token"
+				},
+				"getAdminBalance(SwapUtils.Swap storage,uint256)": {
+					"notice": "return accumulated amount of admin fees of the token with given index"
+				},
+				"getVirtualPrice(SwapUtils.Swap storage)": {
+					"notice": "Get the virtual price, to help calculate profit"
+				},
+				"removeLiquidity(SwapUtils.Swap storage,uint256,uint256[])": {
+					"notice": "Burn LP tokens to remove liquidity from the pool."
+				},
+				"removeLiquidityImbalance(SwapUtils.Swap storage,uint256[],uint256)": {
+					"notice": "Remove liquidity from the pool, weighted differently than the pool's current balances."
+				},
+				"removeLiquidityOneToken(SwapUtils.Swap storage,uint256,uint8,uint256)": {
+					"notice": "Remove liquidity from the pool all in one token."
+				},
+				"setAdminFee(SwapUtils.Swap storage,uint256)": {
+					"notice": "Sets the admin fee"
+				},
+				"setSwapFee(SwapUtils.Swap storage,uint256)": {
+					"notice": "update the swap fee"
+				},
+				"swap(SwapUtils.Swap storage,uint8,uint8,uint256,uint256)": {
+					"notice": "swap two tokens in the pool"
+				},
+				"withdrawAdminFees(SwapUtils.Swap storage,address)": {
+					"notice": "withdraw all admin fees to a given address"
+				}
+			},
+			"notice": "A library to be used within Swap.sol. Contains functions responsible for custody and AMM functionalities.",
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"src/SwapUtils.sol": "SwapUtils"
+		},
+		"evmVersion": "istanbul",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": true,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"src/Address.sol": {
+			"keccak256": "0x04040dd6c50fb398025bb928b0403861d93e36ecd31c65b4e653bbc95bc0981f",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://0e09e1e961045cace4c1e4600b25e400795e8beb7610f6f9128adc44493da240",
+				"dweb:/ipfs/QmWo6VjbGoCHDrn3vionxkadrzcFFvgB8RJqudzoybx2kk"
+			]
+		},
+		"src/AmplificationUtils.sol": {
+			"keccak256": "0xa20bdcf14b8726907f6fef0f9510dbd030eefdb336c044514f1aaccc5e67412c",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://20d992e0ef00af4b16f7cc661388c2d21e61a008755f2d73c9b267d247ed9585",
+				"dweb:/ipfs/QmQjRvez62MVfTZAsvDShoYDstqr3RXUPJdxsKCfWvFeRN"
+			]
+		},
+		"src/LPToken.sol": {
+			"keccak256": "0x9a1cebee9a537708471d6dc9490622d4a609efa02d347e767f453cc8b9df307e",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://be49291505179b700cf2da02b85a8ad4dde3919ac877378214af5b62e82f798a",
+				"dweb:/ipfs/QmUJR3xtd1nvkQZDgzGGupNhvX9C7XCoo3XhkLTK8w4BNr"
+			]
+		},
+		"src/MathUtils.sol": {
+			"keccak256": "0xa6ddf9d8f8facb4a2341205b032c08e6766135d02e713aaf5f5c62c9ef42dcf1",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://fe1094b550b0b5e1a2ba779e7a2a80ceda2325947de84b23fd10228916e47cd4",
+				"dweb:/ipfs/QmWHn9oeGWWWnm4qo8VFgLDmhgbwiUoupr7hLsxaJrFYam"
+			]
+		},
+		"src/OwnableUpgradeable.sol": {
+			"keccak256": "0xfae07c05a52eb3ae018f7c8de07044c9b306ff8d5b0bd3662dfbeba2484e9c40",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://c7c20f7b0ac85764e3c2854c5227c050ef7898b40adcef525998ec08eb114ab0",
+				"dweb:/ipfs/QmTVD3EEMZznD9js3NwJNnj4QGJeheYCFRebfiEGCyQFRn"
+			]
+		},
+		"src/SwapUtils.sol": {
+			"keccak256": "0x9592fe725b2caef977c0a53679178c7b028a8612669494b0cff2fa561745f4d9",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://e6332aa80f321a517fde455b8d33c70311c0193aba9471bf4b49d971ced91385",
+				"dweb:/ipfs/QmVGv2KEwEgmfbGEHZwbpVzKRZiFR1aRYxPm26PDtcppqm"
+			]
+		},
+		"src/interfaces/IERC20.sol": {
+			"keccak256": "0x2c88d81d0bcedd3ab706d483909c689f29f635281bb6140657bfa816babc5d05",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://0aee4682d6461c056571894182ad4f10e39a8f7d7d2a747acf650711d4730658",
+				"dweb:/ipfs/Qmaa1BHXoDGCLxMrKrpouqA47N7ECuhrgn7ZEWvCQiuD8u"
+			]
+		},
+		"src/interfaces/IERC20PermitUpgradeable.sol": {
+			"keccak256": "0xf24e9dd431415eec83e867edca3de6a60cf1248bc50f1c7d2b543875732c868a",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://973d96c0665165fa5202681ec7b6a456482b523dfd70cfca40ee9661e60533fd",
+				"dweb:/ipfs/QmPgDdmE5XeCPVzRpWtW9sqNy51QKNtMg1jZX9WbzcwqSA"
+			]
+		},
+		"src/interfaces/IERC20Upgradeable.sol": {
+			"keccak256": "0x1e4148e9fb5294b9d70d40d67d98bef18722e23bb82f4856a77968328769e272",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://9e39ce0f7e96988feefdab801546248d1d8122d954af7c3e20db37b7fe46131e",
+				"dweb:/ipfs/QmXKi6b1okq7UNE1twToQBaQyxdm6WpqNcS1LuCqDCGavU"
+			]
+		},
+		"src/interfaces/ISwap.sol": {
+			"keccak256": "0x444a5c06e44f90f3c0486ac16afc4d0727433b57778c189b3b99ef430083db14",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://33aa483050747a0ba93df84b5225d8b6438d2098acfb01b6a90b04b6810234d0",
+				"dweb:/ipfs/QmTvxyy5cbgnmafhxQrHj1S4gs3SZCfkPn749618AVxubK"
+			]
+		},
+		"src/libraries/ContextUpgradeable.sol": {
+			"keccak256": "0x3d5d4a7ce156bec766b22364b8ac3911290575cd5215d549961fc840cb31f0d6",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://604f016834642e34a937d4306c49e75566f955dc118b36de57f4d7151be0af1d",
+				"dweb:/ipfs/QmeWxCq3BU3ZJP2fYeaVK2GxYhm4onij7sq6bgYoD6CnaT"
+			]
+		},
+		"src/libraries/CountersUpgradeable.sol": {
+			"keccak256": "0xf210b0d1707edb561f4dde2f57e80dc1484e02b95513da327f4a3f6cb8f819fd",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://dbfd0d1d982e2e4d159fbb349c39292c40313a35e6d9bd9d74c9d8952ba07408",
+				"dweb:/ipfs/QmcPC76yd9g35CB1UZh3VPuLPKVN2PN93i6f8urkihKrXn"
+			]
+		},
+		"src/libraries/ECDSAUpgradeable.sol": {
+			"keccak256": "0x0b370e9934d29463c5643faa0598c0aed0a417b49585950bcba9da855c436cef",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://baaf280674855cdd0cba34e71650fc619ac91557dbf317cf41c9c68b98df01f2",
+				"dweb:/ipfs/QmPmCbadPDM4zRCiWf3oBArFcP23Xhyne68VyiT7ieGtfR"
+			]
+		},
+		"src/libraries/EIP712Upgradeable.sol": {
+			"keccak256": "0x8776e6fe7de83737bf1b4453745cec49292d090c821522658bdd5d37f8bf48de",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://db072b903be91a0ca8fec815448129eb2b837040ad84cffe66d61300e93afaf3",
+				"dweb:/ipfs/QmTXGAuZHBztAVreVk51S92cZKwabJk4BFiEvmX4pL1MiD"
+			]
+		},
+		"src/libraries/ERC20BurnableUpgradeable.sol": {
+			"keccak256": "0x93adcbe7d60988de36e26b0259d19f54ca78c9cd6538ff665c91263c3a4dd7be",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://776c5cb6cb678c94c352fc5cbf37d3a06b22e83ea9e66d25d35a05777f3dc47d",
+				"dweb:/ipfs/QmdxfVGP7BFCwnr6QTT8xnjNn8SFJWSQNjhwwDznri1RSr"
+			]
+		},
+		"src/libraries/ERC20PermitUpgradeable.sol": {
+			"keccak256": "0x4f6a8cd5e9078e432c79e7de139b395faa21fbaa268b6d075c4956f6d3e70abf",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://8f5a2d90bd9f0547a714ee5a64ad513f79a966366388c2d21f1afed1e17b15ae",
+				"dweb:/ipfs/QmdSDAiGFUC7HrRHrbtzXsimqU7tywq234Fnu2zsVUfrvg"
+			]
+		},
+		"src/libraries/ERC20Upgradeable.sol": {
+			"keccak256": "0x59a81b59af7943208f0edd84a38e397adfc6305fc8105065f41f2fd41f92f37a",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://d5c5bc6065e2d466771d19480dfcdfefc419ba1c4886f8797137f7fc8de45964",
+				"dweb:/ipfs/QmbpvoFewMnhEcercKFS1wP15tjLYr7No65EDgxMn4DExw"
+			]
+		},
+		"src/libraries/SafeERC20.sol": {
+			"keccak256": "0x4100f1366e27326478aa92011c24b2477411e7e5887ec161b59ce12df9bf1086",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://a0bf3d1819bc91d0cda496188ba110fd598db80ed04cce4ef557cb65521be102",
+				"dweb:/ipfs/QmUNFXzAQonaTK9xXerbVEVLj1qjSi8e3VgFUF586ZPnhy"
+			]
+		},
+		"src/libraries/SafeMath.sol": {
+			"keccak256": "0xec20b623c569b006fa08beb4d87ef64857052d6b5255f9b193240687f5151dd6",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://945c3affda2bfcb6cde5f35daed7ef0ba7232bde56f8a679660f4dae9292ec07",
+				"dweb:/ipfs/QmSUFNXHUsUHCGPVjjXnfNcQkRmZ9rMKo7o2phNYCu3pVk"
+			]
+		},
+		"src/libraries/SafeMathUpgradeable.sol": {
+			"keccak256": "0x2fb64876303af2b8188e2f8a0c5f95f56366de769fd87f7afdec70c1d4020659",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://8fe5447b81e470acea7a13b4ee7bb26492f7ed7bd8cd0823e5ab7bc9a73db416",
+				"dweb:/ipfs/QmPLHepmdX5uGayvoQS7s29zgR1Aw5xy9xNLFTJjGjC3Ra"
+			]
+		},
+		"src/proxy/Initializable.sol": {
+			"keccak256": "0xa126fc31d6f8fa9d0e016041464bfe9256cde74f1cfd71d19d89876776aac267",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://f343a9b4fe7c4c0091d9ca0e72cf0224c2fe557a7d2c02fde01a9d95aa17c3b5",
+				"dweb:/ipfs/QmfFkgwuGPVKPwZeBUDkC2RamUZmY5Tt1rNxahhpY2xjZR"
+			]
+		},
+		"src/utils/AddressUpgradeable.sol": {
+			"keccak256": "0x1c40ee776b336e29c9f21a2fa2dc2f50c65553b0daa35baa43ae50dc34edbbdc",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://f9cb9358d8e740ad355164ea7c8e1f6be2ebfddf73ac34aaa9360d78cc14e3d4",
+				"dweb:/ipfs/QmXJtKbn9GVhfxdz2NMcg1cwwxqfHk3GEymwSU3Yh8M12L"
+			]
+		}
+	},
+	"version": 1
+}
