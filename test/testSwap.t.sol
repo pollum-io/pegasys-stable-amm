@@ -19,8 +19,6 @@ contract TestDeployer is Test {
     GenericERC20 public token1;
     LPToken public lpToken;
 
-    //  IERC20[] public pooledTokens;
-
     function setUp() public {
         swap = new Swap();
         token0 = new GenericERC20("token0", "TOKEN0", 18);
@@ -30,11 +28,9 @@ contract TestDeployer is Test {
         address swapAddress = address(swap);
         address token0Address = address(token0);
         address token1Address = address(token1);
-
         IERC20[] memory pooledTokens = new IERC20[](2);
         pooledTokens[0] = IERC20(token0Address);
         pooledTokens[1] = IERC20(token1Address);
-
         uint8[] memory decimals = new uint8[](2);
         decimals[0] = 18;
         decimals[1] = 18;
@@ -56,20 +52,7 @@ contract TestDeployer is Test {
             lpTokenTargetAddress
         );
         swapClone = Swap(swapCloneAddress);
-
-        swapDeployer.deploy(
-            swapAddress,
-            pooledTokens,
-            decimals,
-            lpTokenName,
-            lpTokenSymbol,
-            _a,
-            _fee,
-            _adminFee,
-            lpTokenTargetAddress
-        );
         address swapToken = address(swapClone.getLpToken());
-
         lpToken = LPToken(swapToken);
         assertTrue(swapAddress != address(0));
         console.logString("getA");
@@ -104,7 +87,6 @@ contract TestDeployer is Test {
         uint256[] memory amounts = new uint256[](2);
         amounts[0] = 10 * 10**18;
         amounts[1] = 10 * 10**18;
-
         testAddLiquidity();
         console.logUint(swapClone.getTokenBalance(0));
         assertTrue(swapClone.getTokenBalance(0) > 10000000000000000000);
