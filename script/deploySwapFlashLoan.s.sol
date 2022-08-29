@@ -5,7 +5,6 @@ import "forge-std/Script.sol";
 import {SwapDeployer} from "../src/SwapDeployer.sol";
 import {SwapFlashLoan} from "../src/SwapFlashLoan.sol";
 import {LPToken} from "../src/LPToken.sol";
-//import {GenericERC20} from "../src/helpers/GenericERC20.sol";
 import {IERC20} from "../src/interfaces/IERC20.sol";
 
 contract MyScript is Script {
@@ -13,8 +12,6 @@ contract MyScript is Script {
     SwapDeployer public swapDeployer;
     SwapFlashLoan public swap;
     SwapFlashLoan public swapClone;
-    // GenericERC20 public token0;
-    // GenericERC20 public token1;
     IERC20 public USDT;
     IERC20 public BUSD;
     LPToken public lpToken;
