@@ -3,3 +3,4 @@ cache
 .env
 out
 broadcast
+.vscode
