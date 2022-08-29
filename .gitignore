@@ -4,3 +4,5 @@ cache
 out
 broadcast
 .vscode
+.deps
+artifacts
