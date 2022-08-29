@@ -2,7 +2,6 @@
 
 pragma solidity >=0.6.0 <0.9.0;
 import {SwapDeployer} from "../src/SwapDeployer.sol";
-// import "../../src/interfaces/ISwap.sol";
 import {Swap} from "../src/Swap.sol";
 import {GenericERC20} from "../src/helpers/GenericERC20.sol";
 import {IERC20} from "../src/interfaces/IERC20.sol";

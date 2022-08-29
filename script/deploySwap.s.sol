@@ -54,17 +54,6 @@ contract MyScript is Script {
         );
         swapClone = Swap(swapCloneAddress);
 
-        swapDeployer.deploy(
-            swapAddress,
-            pooledTokens,
-            decimals,
-            lpTokenName,
-            lpTokenSymbol,
-            _a,
-            _fee,
-            _adminFee,
-            lpTokenTargetAddress
-        );
         address swapToken = address(swapClone.getLpToken());
 
         lpToken = LPToken(swapToken);

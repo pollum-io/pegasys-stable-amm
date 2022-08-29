@@ -6,3 +6,4 @@ broadcast
 .vscode
 .deps
 artifacts
+script/artifacts

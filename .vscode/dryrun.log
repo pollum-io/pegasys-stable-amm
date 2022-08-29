@@ -1,6 +1,0 @@
-make --dry-run --always-make --keep-going --print-directory
-make: Entering directory '/home/kf690/Pollum/pegasys-stable-amm'
-make: Leaving directory '/home/kf690/Pollum/pegasys-stable-amm'
- 
-make: *** No targets specified and no makefile found.  Stop.
-
