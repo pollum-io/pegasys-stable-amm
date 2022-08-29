@@ -20,10 +20,31 @@ $ forge test
 ### Deploying contracts to Anvil localhost 
 
 ```bash
-$ anvil
+$ anvil --fork-url https://rpc.syscoin.org
+```
+Make sure to set your environmental variables as shown in .env.example
+
+```bash
+$ source .env
+```
+Deploy the swap deployer first:
+
+```bash
+$ forge script script/deploySwapDeployer.s.sol ---rpc-url http://localhost:8545 \
+ --private-key $PRIVATE_KEY --broadcast
 ```
 
 ```bash
-$ forge script script/deploySwapDeployer.s.sol:MyScript --fork-url http://localhost:8545 \
- --private-key $PRIVATE-KEY --broadcast
+$ forge script script/deployRouter.s.sol --rpc-url http://localhost:8545 \
+ --private-key $PRIVATE_KEY --broadcast
 ```
+
+Then get the address for the swapDeployer and set it to the SWAP_DEPLOYER_ADDRESS key inside your .env file
+```bash
+$ forge script script/deploySwap.s.sol --rpc-url http://localhost:8545 \
+ --private-key $PRIVATE_KEY --broadcast
+```
+deploySwap and deploySwapFlashloan shown here are generic scripts that are to be adapted as needed for new base and meta pairs.
+
+The flag --rpc-url can be set to point to a live network as needed.
+

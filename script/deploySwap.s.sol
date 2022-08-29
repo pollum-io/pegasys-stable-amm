@@ -7,7 +7,7 @@ import {Swap} from "../src/Swap.sol";
 import {LPToken} from "../src/LPToken.sol";
 import {IERC20} from "../src/interfaces/IERC20.sol";
 
-contract MyScript is Script {
+contract deploySwap is Script {
     
     SwapDeployer public swapDeployer;
     Swap public swap;

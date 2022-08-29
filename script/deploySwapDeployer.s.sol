@@ -4,7 +4,7 @@ pragma solidity >=0.6.0 <0.9.0;
 import "forge-std/Script.sol";
 import "../src/SwapDeployer.sol";
 
-contract MyScript is Script {
+contract deploySwapDeployer is Script {
     function run() external {
         vm.startBroadcast();
 
