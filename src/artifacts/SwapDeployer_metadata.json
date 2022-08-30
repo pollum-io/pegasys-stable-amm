@@ -1,0 +1,267 @@
+{
+	"compiler": {
+		"version": "0.8.0+commit.c7dfd78e"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [],
+				"stateMutability": "nonpayable",
+				"type": "constructor"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "target",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "cloneAddress",
+						"type": "address"
+					}
+				],
+				"name": "NewClone",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "deployer",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "swapAddress",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "contract IERC20[]",
+						"name": "pooledTokens",
+						"type": "address[]"
+					}
+				],
+				"name": "NewSwapPool",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "previousOwner",
+						"type": "address"
+					},
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "newOwner",
+						"type": "address"
+					}
+				],
+				"name": "OwnershipTransferred",
+				"type": "event"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "target",
+						"type": "address"
+					}
+				],
+				"name": "clone",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "swapAddress",
+						"type": "address"
+					},
+					{
+						"internalType": "contract IERC20[]",
+						"name": "_pooledTokens",
+						"type": "address[]"
+					},
+					{
+						"internalType": "uint8[]",
+						"name": "decimals",
+						"type": "uint8[]"
+					},
+					{
+						"internalType": "string",
+						"name": "lpTokenName",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "lpTokenSymbol",
+						"type": "string"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_a",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_fee",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_adminFee",
+						"type": "uint256"
+					},
+					{
+						"internalType": "address",
+						"name": "lpTokenTargetAddress",
+						"type": "address"
+					}
+				],
+				"name": "deploy",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "owner",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "renounceOwnership",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "newOwner",
+						"type": "address"
+					}
+				],
+				"name": "transferOwnership",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {
+				"owner()": {
+					"details": "Returns the address of the current owner."
+				},
+				"renounceOwnership()": {
+					"details": "Leaves the contract without owner. It will not be possible to call `onlyOwner` functions anymore. Can only be called by the current owner. NOTE: Renouncing ownership will leave the contract without an owner, thereby removing any functionality that is only available to the owner."
+				},
+				"transferOwnership(address)": {
+					"details": "Transfers ownership of the contract to a new account (`newOwner`). Can only be called by the current owner."
+				}
+			},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"src/SwapDeployer.sol": "SwapDeployer"
+		},
+		"evmVersion": "istanbul",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": true,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"src/.deps/npm/@openzeppelin/contracts/access/Ownable.sol": {
+			"keccak256": "0x37c1b0a4a436e94fa52f40f9c9a6451ae76e7db73eed457dbaa3a7e75a634034",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://62bdf7ee690f5ce25a0ede1579ff447c8060448020cc8a3f1cf4869c4d637117",
+				"dweb:/ipfs/QmZ9Mxav2XWCUnc4vBwvhG4BBojSEbaMkkFLhJqBNKgVjd"
+			]
+		},
+		"src/.deps/npm/@openzeppelin/contracts/proxy/Clones.sol": {
+			"keccak256": "0xae614c6b103b743c62e9544632f7ef4fc8950de4e9c783d2e765a3b86701dda3",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://1840012075b9b05caa02da1b16d2d2662b2c383feb3169c8159fd8deb4840f5c",
+				"dweb:/ipfs/QmPj63a7JH3aAqVj1wvkuGEdth7s9f33vK26A5aE9k23S4"
+			]
+		},
+		"src/SwapDeployer.sol": {
+			"keccak256": "0xb7b083dfde292ca4a44212489de31062d4f53cc32590abdc547fa147dedea098",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://377d1d719ae781256269b0c7913beea075347101444b497ce95073db6e435bad",
+				"dweb:/ipfs/QmexHFzLQJVCEp2VdVKNEcwvUvriLRHFrJN3csx9UTprtb"
+			]
+		},
+		"src/interfaces/IERC20.sol": {
+			"keccak256": "0x2c88d81d0bcedd3ab706d483909c689f29f635281bb6140657bfa816babc5d05",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://0aee4682d6461c056571894182ad4f10e39a8f7d7d2a747acf650711d4730658",
+				"dweb:/ipfs/Qmaa1BHXoDGCLxMrKrpouqA47N7ECuhrgn7ZEWvCQiuD8u"
+			]
+		},
+		"src/interfaces/ISwap.sol": {
+			"keccak256": "0x444a5c06e44f90f3c0486ac16afc4d0727433b57778c189b3b99ef430083db14",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://33aa483050747a0ba93df84b5225d8b6438d2098acfb01b6a90b04b6810234d0",
+				"dweb:/ipfs/QmTvxyy5cbgnmafhxQrHj1S4gs3SZCfkPn749618AVxubK"
+			]
+		}
+	},
+	"version": 1
+}

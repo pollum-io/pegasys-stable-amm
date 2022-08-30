@@ -1,0 +1,574 @@
+{
+	"compiler": {
+		"version": "0.8.0+commit.c7dfd78e"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [
+					{
+						"internalType": "contract ISwap",
+						"name": "pool",
+						"type": "address"
+					},
+					{
+						"internalType": "contract ISwap",
+						"name": "basePool",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256[]",
+						"name": "meta_amounts",
+						"type": "uint256[]"
+					},
+					{
+						"internalType": "uint256[]",
+						"name": "base_amounts",
+						"type": "uint256[]"
+					},
+					{
+						"internalType": "uint256",
+						"name": "minToMint",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "deadline",
+						"type": "uint256"
+					}
+				],
+				"name": "addLiquidity",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "contract ISwap",
+						"name": "fromPool",
+						"type": "address"
+					},
+					{
+						"internalType": "contract ISwap",
+						"name": "toPool",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					}
+				],
+				"name": "calculateConvert",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "contract ISwap",
+						"name": "pool",
+						"type": "address"
+					},
+					{
+						"internalType": "contract ISwap",
+						"name": "basePool",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_token_amount",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint8",
+						"name": "iBase",
+						"type": "uint8"
+					}
+				],
+				"name": "calculateRemoveBaseLiquidityOneToken",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "availableTokenAmount",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "contract ISwap",
+						"name": "pool",
+						"type": "address"
+					},
+					{
+						"internalType": "contract ISwap",
+						"name": "basePool",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					}
+				],
+				"name": "calculateRemoveLiquidity",
+				"outputs": [
+					{
+						"internalType": "uint256[]",
+						"name": "meta_amounts",
+						"type": "uint256[]"
+					},
+					{
+						"internalType": "uint256[]",
+						"name": "base_amounts",
+						"type": "uint256[]"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "contract ISwap",
+						"name": "pool",
+						"type": "address"
+					},
+					{
+						"internalType": "contract ISwap",
+						"name": "basePool",
+						"type": "address"
+					},
+					{
+						"internalType": "uint8",
+						"name": "tokenIndexFrom",
+						"type": "uint8"
+					},
+					{
+						"internalType": "uint8",
+						"name": "tokenIndexTo",
+						"type": "uint8"
+					},
+					{
+						"internalType": "uint256",
+						"name": "dx",
+						"type": "uint256"
+					}
+				],
+				"name": "calculateSwapFromBase",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "contract ISwap",
+						"name": "pool",
+						"type": "address"
+					},
+					{
+						"internalType": "contract ISwap",
+						"name": "basePool",
+						"type": "address"
+					},
+					{
+						"internalType": "uint8",
+						"name": "tokenIndexFrom",
+						"type": "uint8"
+					},
+					{
+						"internalType": "uint8",
+						"name": "tokenIndexTo",
+						"type": "uint8"
+					},
+					{
+						"internalType": "uint256",
+						"name": "dx",
+						"type": "uint256"
+					}
+				],
+				"name": "calculateSwapToBase",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "contract ISwap",
+						"name": "pool",
+						"type": "address"
+					},
+					{
+						"internalType": "contract ISwap",
+						"name": "basePool",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256[]",
+						"name": "meta_amounts",
+						"type": "uint256[]"
+					},
+					{
+						"internalType": "uint256[]",
+						"name": "base_amounts",
+						"type": "uint256[]"
+					},
+					{
+						"internalType": "bool",
+						"name": "is_deposit",
+						"type": "bool"
+					}
+				],
+				"name": "calculateTokenAmount",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "contract ISwap",
+						"name": "fromPool",
+						"type": "address"
+					},
+					{
+						"internalType": "contract ISwap",
+						"name": "toPool",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "minToMint",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "deadline",
+						"type": "uint256"
+					}
+				],
+				"name": "convert",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "contract ISwap",
+						"name": "pool",
+						"type": "address"
+					},
+					{
+						"internalType": "contract ISwap",
+						"name": "basePool",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_token_amount",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint8",
+						"name": "i",
+						"type": "uint8"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_min_amount",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "deadline",
+						"type": "uint256"
+					}
+				],
+				"name": "removeBaseLiquidityOneToken",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "contract ISwap",
+						"name": "pool",
+						"type": "address"
+					},
+					{
+						"internalType": "contract ISwap",
+						"name": "basePool",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_amount",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256[]",
+						"name": "min_amounts_meta",
+						"type": "uint256[]"
+					},
+					{
+						"internalType": "uint256[]",
+						"name": "min_amounts_base",
+						"type": "uint256[]"
+					},
+					{
+						"internalType": "uint256",
+						"name": "deadline",
+						"type": "uint256"
+					}
+				],
+				"name": "removeLiquidity",
+				"outputs": [
+					{
+						"internalType": "uint256[]",
+						"name": "amounts",
+						"type": "uint256[]"
+					},
+					{
+						"internalType": "uint256[]",
+						"name": "base_amounts",
+						"type": "uint256[]"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "contract ISwap",
+						"name": "pool",
+						"type": "address"
+					},
+					{
+						"internalType": "contract ISwap",
+						"name": "basePool",
+						"type": "address"
+					},
+					{
+						"internalType": "uint8",
+						"name": "tokenIndexFrom",
+						"type": "uint8"
+					},
+					{
+						"internalType": "uint8",
+						"name": "tokenIndexTo",
+						"type": "uint8"
+					},
+					{
+						"internalType": "uint256",
+						"name": "dx",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "minDy",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "deadline",
+						"type": "uint256"
+					}
+				],
+				"name": "swapFromBase",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "contract ISwap",
+						"name": "pool",
+						"type": "address"
+					},
+					{
+						"internalType": "contract ISwap",
+						"name": "basePool",
+						"type": "address"
+					},
+					{
+						"internalType": "uint8",
+						"name": "tokenIndexFrom",
+						"type": "uint8"
+					},
+					{
+						"internalType": "uint8",
+						"name": "tokenIndexTo",
+						"type": "uint8"
+					},
+					{
+						"internalType": "uint256",
+						"name": "dx",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "minDy",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "deadline",
+						"type": "uint256"
+					}
+				],
+				"name": "swapToBase",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"src/Router.sol": "Router"
+		},
+		"evmVersion": "istanbul",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": true,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"src/Address.sol": {
+			"keccak256": "0x04040dd6c50fb398025bb928b0403861d93e36ecd31c65b4e653bbc95bc0981f",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://0e09e1e961045cace4c1e4600b25e400795e8beb7610f6f9128adc44493da240",
+				"dweb:/ipfs/QmWo6VjbGoCHDrn3vionxkadrzcFFvgB8RJqudzoybx2kk"
+			]
+		},
+		"src/Router.sol": {
+			"keccak256": "0x0dba9d07b380a92e2fd5df822b74d0412587eae74470bd84342b6c29fd8d6a4d",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://097bf03be5b1cfe97cb4cbf7fd68fd5686b636271862b7525bf91fd52a08ebb2",
+				"dweb:/ipfs/QmQrMNoJjfkaSjLtYcVr2dYNyFGJ2k3hpFEbKBePXypvmY"
+			]
+		},
+		"src/interfaces/IERC20.sol": {
+			"keccak256": "0x2c88d81d0bcedd3ab706d483909c689f29f635281bb6140657bfa816babc5d05",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://0aee4682d6461c056571894182ad4f10e39a8f7d7d2a747acf650711d4730658",
+				"dweb:/ipfs/Qmaa1BHXoDGCLxMrKrpouqA47N7ECuhrgn7ZEWvCQiuD8u"
+			]
+		},
+		"src/interfaces/ISwap.sol": {
+			"keccak256": "0x444a5c06e44f90f3c0486ac16afc4d0727433b57778c189b3b99ef430083db14",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://33aa483050747a0ba93df84b5225d8b6438d2098acfb01b6a90b04b6810234d0",
+				"dweb:/ipfs/QmTvxyy5cbgnmafhxQrHj1S4gs3SZCfkPn749618AVxubK"
+			]
+		},
+		"src/libraries/SafeERC20.sol": {
+			"keccak256": "0x4100f1366e27326478aa92011c24b2477411e7e5887ec161b59ce12df9bf1086",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://a0bf3d1819bc91d0cda496188ba110fd598db80ed04cce4ef557cb65521be102",
+				"dweb:/ipfs/QmUNFXzAQonaTK9xXerbVEVLj1qjSi8e3VgFUF586ZPnhy"
+			]
+		},
+		"src/libraries/SafeMath.sol": {
+			"keccak256": "0xec20b623c569b006fa08beb4d87ef64857052d6b5255f9b193240687f5151dd6",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://945c3affda2bfcb6cde5f35daed7ef0ba7232bde56f8a679660f4dae9292ec07",
+				"dweb:/ipfs/QmSUFNXHUsUHCGPVjjXnfNcQkRmZ9rMKo7o2phNYCu3pVk"
+			]
+		}
+	},
+	"version": 1
+}
